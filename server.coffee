@@ -14,7 +14,7 @@ app.use('/js/bundle.js', browserify('./index.coffee', {
 app.use('/css', expressLess(__dirname + '/css'));
 
 
-# Try loading the path /connect/localhost:8080/index.xml to 
+# Try loading the path /connect/localhost:8080/index.xml to
 # specify the server and scene you want to load
 app.get '/connect/*', (req, res) ->
   res.send fs.readFileSync(__dirname + "/index.html").toString()
@@ -22,3 +22,7 @@ app.get '/connect/*', (req, res) ->
 console.log "[webclient] Listening for connections on localhost:9000..."
 
 app.listen(9000)
+
+# server = require('http').createServer();
+# webRTC = require('webrtc.io').listen(server);
+# server.listen(1000)

@@ -133,7 +133,7 @@ class Connector extends EventEmitter
     html2canvas div[0], {
       useCORS : true
       onrendered: (canvas) =>
-        texture = new THREE.Texture(canvas) 
+        texture = new THREE.Texture(canvas)
         texture.needsUpdate = true;
         material = new THREE.MeshBasicMaterial( {map: texture, side:THREE.DoubleSide } )
         material.transparent = false;
@@ -161,9 +161,10 @@ class Connector extends EventEmitter
     obj
 
   createPlayer: (el) ->
-    geometry1 = new THREE.CylinderGeometry( 0.02, 0.5, 1.3, 10 )
+    geometry1 = new THREE.CylinderGeometry( 0.02, 0.4, 0.9, 10 )
     mesh1 = new THREE.Mesh( geometry1 )
-    geometry2 = new THREE.SphereGeometry( 0.3, 10, 10 )
+    mesh1.position.y = -0.2
+    geometry2 = new THREE.BoxGeometry( 0.8, 0.8, 0.1 )
     mesh2 = new THREE.Mesh( geometry2 )
     mesh2.position.y = 0.6
 
@@ -206,7 +207,7 @@ class Connector extends EventEmitter
       new THREE.Vector3(1,1,1)
 
     obj.scale.copy(newScale)
-    
+
     # Add physics model
     boxShape = new CANNON.Box(new CANNON.Vec3().copy(newScale.multiplyScalar(0.5)))
     boxBody = new CANNON.Body({ mass: 0 })
@@ -256,7 +257,7 @@ class Connector extends EventEmitter
 
     obj.scale.copy(newScale)
 
-    obj 
+    obj
 
   createAudio: (el) ->
     obj = new THREE.Object3D
@@ -402,7 +403,7 @@ class Connector extends EventEmitter
           console.log "Unrecognized event #{el.attr('name')}"
 
       else if uuid = el.attr('uuid')
-        if el.is("dead") 
+        if el.is("dead")
           if obj = @scene.getObjectByName(uuid)
             if obj.body
               @client.world.remove(obj.body)
@@ -500,7 +501,7 @@ class Connector extends EventEmitter
             if !obj.quaternion.equals(newQuaternion)
               tween = new TWEEN.Tween(obj.quaternion)
               tween.to(newQuaternion, 200)
-                .onUpdate(-> 
+                .onUpdate(->
                   obj.quaternion.set(@x, @y, @z, @w)
                   if obj.body
                     obj.body.quaternion.set(@x, @y, @z, @w)
@@ -511,7 +512,7 @@ class Connector extends EventEmitter
           if !startPosition.equals(newPosition)
             tween = new TWEEN.Tween(startPosition)
             tween.to(newPosition, 200)
-              .onUpdate(-> 
+              .onUpdate(->
                 obj.position.set(@x, @y, @z)
                 if obj.body
                   obj.body.position.set(@x, @y, @z)
@@ -519,7 +520,7 @@ class Connector extends EventEmitter
               .easing(TWEEN.Easing.Linear.None)
               .start()
 
-        if el.is("box") 
+        if el.is("box")
           obj.material.setValues { color : el.attr('color'), ambient : Color(el.attr('color')).hexString() }
-  
+
 module.exports = Connector
